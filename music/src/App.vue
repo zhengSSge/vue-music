@@ -1,22 +1,26 @@
 <template>
+  <!--项目呈现页-->
   <div id="app">
-    <router-view/>
+    <Mheader></Mheader>
+    <tab></tab>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+    <!--<player></player>-->
   </div>
 </template>
 
 <script>
+import Mheader from 'src/components/m-header/m-header'
+import Tab from 'src/components/tab/tab'
+
 export default {
-  name: 'App'
+  components: {
+    Tab,
+    Mheader
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
