@@ -1,5 +1,5 @@
 import originJSONP from 'jsonp'
-// jsonp封装
+// jsonp跨域请求封装
 
 export default function jsonp (url, data, option) {
   url += (url.indexOf('?') > 0 ? '&' : '?') + param(data)

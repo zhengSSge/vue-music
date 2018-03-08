@@ -37,7 +37,8 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       'src': resolve('src'),
       'common': resolve('src/common'), // 配置别名方便找到
-      'api': resolve('src/api')
+      'api': resolve('src/api'),
+      'base': resolve('src/base')
     }
   },
   module: {
