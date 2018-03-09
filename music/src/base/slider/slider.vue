@@ -1,4 +1,5 @@
 <template>
+  <!--轮播组件-->
   <div class="slider" ref="slider">
     <div class="slider-group" ref="sliderGroup">
       <!--slot插槽-->
@@ -6,6 +7,8 @@
       </slot>
     </div>
     <div class="dots">
+      <span class="dot" :class="{ active: currentPageIndex === index }" v-for="(item, index) in dots"
+            :key="index"></span>
     </div>
   </div>
 </template>
@@ -15,6 +18,12 @@
   import { addClass } from 'common/js/dom'
 
   export default {
+    data () {
+      return {
+        dots: [],
+        currentPageIndex: 0
+      }
+    },
     props: {
       loop: {
         type: Boolean,
@@ -32,11 +41,23 @@
     mounted () {
       setTimeout(() => {
         this._setSliderWidth()
+        this._initDots()
         this._inintSlider()
       }, 20)
+      if (this.autoPlay) {
+        this._play()
+      }
+//      变换页面监听视图宽度/更新
+      window.addEventListener('resize', () => {
+        if (!this.slider) {
+          return
+        }
+        this._setSliderWidth(true)
+        this.slider.refresh()
+      })
     },
     methods: {
-      _setSliderWidth () {
+      _setSliderWidth (isResize) {
 //        获取到元素的图片数量
         this.children = this.$refs.sliderGroup.children
         let width = 0
@@ -48,7 +69,8 @@
           childs.style.width = sliderWidth + 'px'
           width += sliderWidth
         }
-        if (this.loop) {
+//        留出滚动宽度所以*2
+        if (this.loop && !isResize) {
           width += sliderWidth * 2
         }
         this.$refs.sliderGroup.style.width = width + 'px'
@@ -63,6 +85,34 @@
           snapThreshold: 0.3,
           snapSpeed: 400
         })
+        this.slider.on('scrollEnd', () => {
+//          获取到当前第几个子元素
+          let pageIndex = this.slider.getCurrentPage().pageX
+//          如果是循环播放需要-1  因为循环左右留位了
+          if (this.loop) {
+            pageIndex -= 1
+          }
+          this.currentPageIndex = pageIndex
+          if (this.autoPlay) {
+            clearInterval(this.timer)
+            this._play()
+          }
+        })
+      },
+      _initDots () {
+//        获取轮播图片length
+        this.dots = new Array(this.children.length)
+//        this.dots = this.children.length
+      },
+      _play () {
+//        播放函数
+        let pageIndex = this.currentPageIndex + 1
+        if (this.loop) {
+          pageIndex += 1
+        }
+        this.timer = setTimeout(() => {
+          this.slider.goToPage(pageIndex, 0, 400)
+        }, this.interval)
       }
     }
   }

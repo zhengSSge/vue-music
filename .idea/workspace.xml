@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b9e40eda-f6b2-4361-a81e-7e9cd382000f" name="Default" comment="vue-router 配置">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/music/src/base/slider/slider.vue" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/music/src/common/js/dom.js" />
+    <list default="true" id="b9e40eda-f6b2-4361-a81e-7e9cd382000f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/music/build/webpack.base.conf.js" afterPath="$PROJECT_DIR$/music/build/webpack.base.conf.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/music/package.json" afterPath="$PROJECT_DIR$/music/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/music/src/api/config.js" afterPath="$PROJECT_DIR$/music/src/api/config.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/music/src/common/js/jsonp.js" afterPath="$PROJECT_DIR$/music/src/common/js/jsonp.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/music/src/components/recommend/recommend.vue" afterPath="$PROJECT_DIR$/music/src/components/recommend/recommend.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/music/src/base/slider/slider.vue" afterPath="$PROJECT_DIR$/music/src/base/slider/slider.vue" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -33,7 +28,7 @@
         <entry file="file://$PROJECT_DIR$/music/src/common/js/jsonp.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
-              <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+              <caret line="15" column="1" lean-forward="false" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -49,11 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="recommend.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="recommend.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/music/src/components/recommend/recommend.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="13" column="12" lean-forward="true" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+            <state relative-caret-position="507">
+              <caret line="42" column="11" lean-forward="false" selection-start-line="42" selection-start-column="11" selection-end-line="42" selection-end-column="11" />
               <folding>
                 <element signature="e#612#651#0" expanded="true" />
               </folding>
@@ -61,13 +56,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="slider.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="slider.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/music/src/base/slider/slider.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="3" column="16" lean-forward="false" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="16" />
+            <state relative-caret-position="234">
+              <caret line="13" column="11" lean-forward="true" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
               <folding>
-                <element signature="e#246#281#0" expanded="true" />
+                <element signature="e#395#430#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -77,7 +72,7 @@
         <entry file="file://$PROJECT_DIR$/music/build/webpack.base.conf.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="314">
-              <caret line="39" column="30" lean-forward="true" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
+              <caret line="39" column="30" lean-forward="false" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -86,8 +81,8 @@
       <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/music/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="6" column="14" lean-forward="true" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
+            <state relative-caret-position="309">
+              <caret line="22" column="42" lean-forward="false" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -122,6 +117,7 @@
       <find>indent_size</find>
       <find>common</find>
       <find>slider-item</find>
+      <find>con</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -145,9 +141,9 @@
         <option value="$PROJECT_DIR$/music/src/common/js/jsonp.js" />
         <option value="$PROJECT_DIR$/music/build/webpack.base.conf.js" />
         <option value="$PROJECT_DIR$/music/.eslintrc.js" />
-        <option value="$PROJECT_DIR$/music/package.json" />
         <option value="$PROJECT_DIR$/music/src/common/js/dom.js" />
         <option value="$PROJECT_DIR$/music/src/components/recommend/recommend.vue" />
+        <option value="$PROJECT_DIR$/music/package.json" />
         <option value="$PROJECT_DIR$/music/src/base/slider/slider.vue" />
       </list>
     </option>
@@ -300,7 +296,7 @@
       <workItem from="1520317413690" duration="10445000" />
       <workItem from="1520390178372" duration="7996000" />
       <workItem from="1520406980527" duration="3658000" />
-      <workItem from="1520473557871" duration="11370000" />
+      <workItem from="1520473557871" duration="17056000" />
     </task>
     <task id="LOCAL-00001" summary="项目初配">
       <created>1520318364541</created>
@@ -323,11 +319,18 @@
       <option name="project" value="LOCAL" />
       <updated>1520409277576</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="轮播图（上）">
+      <created>1520502846854</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1520502846854</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33563000" />
+    <option name="totallyTimeSpent" value="39249000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -362,7 +365,8 @@
     <MESSAGE value="项目初配" />
     <MESSAGE value="vue-router 配置" />
     <MESSAGE value="jsonp跨域请求封装" />
-    <option name="LAST_COMMIT_MESSAGE" value="jsonp跨域请求封装" />
+    <MESSAGE value="轮播图（上）" />
+    <option name="LAST_COMMIT_MESSAGE" value="轮播图（上）" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -605,26 +609,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/music/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="6" column="14" lean-forward="true" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/music/build/webpack.base.conf.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="39" column="30" lean-forward="true" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/music/src/common/js/jsonp.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+          <caret line="15" column="1" lean-forward="false" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -637,22 +625,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/music/src/base/slider/slider.vue">
+    <entry file="file://$PROJECT_DIR$/music/build/webpack.base.conf.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="3" column="16" lean-forward="false" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="16" />
-          <folding>
-            <element signature="e#246#281#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="314">
+          <caret line="39" column="30" lean-forward="false" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/music/src/components/recommend/recommend.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="13" column="12" lean-forward="true" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+        <state relative-caret-position="507">
+          <caret line="42" column="11" lean-forward="false" selection-start-line="42" selection-start-column="11" selection-end-line="42" selection-end-column="11" />
           <folding>
             <element signature="e#612#651#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/music/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="22" column="42" lean-forward="false" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/music/src/base/slider/slider.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="11" lean-forward="true" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+          <folding>
+            <element signature="e#395#430#0" expanded="true" />
           </folding>
         </state>
       </provider>
