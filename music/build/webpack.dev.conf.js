@@ -54,6 +54,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       app.get('/api/getDiscList', function (req, res) {
         // 请求的api地址
         const url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
+        // 此方法欺骗qq
         axios.get(url, {
           headers: {
             referer: 'https://c.y.qq.com/',
