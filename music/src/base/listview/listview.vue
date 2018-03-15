@@ -1,8 +1,14 @@
 <template>
   <!--歌手组件-->
-  <scroll class="listview" :data="data" ref="listview">
+  <scroll class="listview"
+          :data="data"
+          ref="listview"
+          :listEnScroll="listEnScroll"
+          :probeType="probeType"
+          @scroll="scroll"
+  >
     <ul>
-      <li v-for="group in data" class="list-group" :key="group.id">
+      <li v-for="group in data" class="list-group" :key="group.id" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <uL>
           <li v-for="item in group.items" class="list-group-item" :key="item.id">
@@ -12,21 +18,122 @@
         </uL>
       </li>
     </ul>
+    <!--右侧元素-->
+    <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
+      <ul>
+        <li class="item" v-for="(items, index) in shortcutList"
+            :key="index"
+            :class="{'current':currentIndex===index}"
+            :date-index="index">
+          {{items}}
+        </li>
+      </ul>
+    </div>
   </scroll>
 </template>
 
 <script type="text/ecmascript-6">
   import scroll from 'base/scroll/scroll'
+  import { getData } from 'common/js/dom'
+
+  const ANCHOR_HEIGHT = 18
 
   export default {
+    data () {
+      return {
+        scrollY: -1, // 位置
+        currentIndex: 0, // 高亮index
+        listHeight: [] // 字母每一个元素的高度
+      }
+    },
     props: {
       data: {
         type: Array
       }
     },
     created () {
+      this.touch = {} // Start /move 互通数据
+      this.listEnScroll = true // 启动监听
+      this.probeType = 3 // 启动监听
+    },
+    computed: {
+//      计算属性
+      shortcutList () {
+        return this.data.map((group) => {
+//          右侧仅显示单一文字
+          return group.title.substr(0, 1)
+        })
+      }
     },
     methods: {
+//          移动端点击事件
+      onShortcutTouchStart (e) {
+        let anchorIndex = getData(e.target, 'index') // 取到touch时右侧下标(第几个元素)
+        this.touch.anchorIndex = anchorIndex
+
+        let firstTouch = e.touches[0] // 取到鼠标第一次touch时的 Y点坐标
+        this.touch.y1 = firstTouch.pageY
+
+        this._scrollTo(anchorIndex) // 滑动
+      },
+//          移动端滑动事件
+      onShortcutTouchMove (e) {
+        let firstTouch = e.touches[0] // 取到鼠标第一次Move的 Y点坐标
+        this.touch.y2 = firstTouch.clientY
+
+//          Y(竖轴)点击偏移值 除去一个元素高=18后取整 得到便宜滑动了几个元素
+        let delte = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
+        let anchorIndex = parseInt(this.touch.anchorIndex) + delte
+
+        this._scrollTo(anchorIndex)
+      },
+      scroll (pos) {
+        this.scrollY = pos.y
+      },
+      _scrollTo (index) {
+        //        使左侧scroll滚动至与右侧下标相符的方位
+        // dom元素              滑动时间
+        this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
+      },
+      _calculateHeight () {
+        this.listHeight = []
+        const list = this.$refs.listGroup
+        let height = 0
+        this.listHeight.push(height) // 第一个元素高度0
+        for (let i = 0; i < list.length; i++) {
+          let item = list[i]
+          height += item.clientHeight // 依次累加获取每一个元素的高度
+          this.listHeight.push(height)
+        }
+      }
+    },
+    watch: {
+      data () {
+        setTimeout(() => {
+          this._calculateHeight()
+        }, 20)
+      },
+      scrollY (newY) {
+        const listHeight = this.listHeight
+//        滚动到顶部
+        if (newY > 0) {
+          this.currentIndex = 0
+          return
+        }
+//        滚动到中部
+        for (let i = 0; i < listHeight.length - 1; i++) {
+          let height1 = listHeight[i] // 下限 数字值低
+          let height2 = listHeight[i + 1] // 上限 数字值高
+          //  当前scroll位置与右侧匹配
+          if (-newY >= height1 && -newY < height2) {
+            this.currentIndex = i
+            return
+          }
+        }
+//        滚动到低部
+        console.log(listHeight.length)
+        this.currentIndex = listHeight.length - 2
+      }
     },
     components: {
       scroll
