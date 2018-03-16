@@ -41,9 +41,9 @@
   export default {
     data () {
       return {
-        scrollY: -1, // 位置
+        scrollY: -1, // 接收scroll传递过来的 Y(竖轴)滚动位置（当前位置）
         currentIndex: 0, // 高亮index
-        listHeight: [] // 字母每一个元素的高度
+        listHeight: [] // 字母每一个元素距离顶部高度
       }
     },
     props: {
@@ -66,10 +66,10 @@
       }
     },
     methods: {
-//          移动端点击事件
+//          移动端点击事件 使左侧滚动到右侧对应位置
       onShortcutTouchStart (e) {
-        let anchorIndex = getData(e.target, 'index') // 取到touch时右侧下标(第几个元素)
-        this.touch.anchorIndex = anchorIndex
+        let anchorIndex = getData(e.target, 'index')
+        this.touch.anchorIndex = anchorIndex // touch加入anchorIndex 记录touch时右侧下标(第几个元素)
 
         let firstTouch = e.touches[0] // 取到鼠标第一次touch时的 Y点坐标
         this.touch.y1 = firstTouch.pageY
@@ -81,21 +81,28 @@
         let firstTouch = e.touches[0] // 取到鼠标第一次Move的 Y点坐标
         this.touch.y2 = firstTouch.clientY
 
-//          Y(竖轴)点击偏移值 除去一个元素高=18后取整 得到便宜滑动了几个元素
-        let delte = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
+        let delte = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0 // Y(竖轴)点击偏移值 除去一个元素高=18后取整 得到偏移滑动了几个元素
         let anchorIndex = parseInt(this.touch.anchorIndex) + delte
 
         this._scrollTo(anchorIndex)
       },
       scroll (pos) {
+//        接收scroll传递过来的 Y(竖轴)滚动位置（当前位置）
         this.scrollY = pos.y
       },
       _scrollTo (index) {
-        //        使左侧scroll滚动至与右侧下标相符的方位
-        // dom元素              滑动时间
+        console.log(index !== 0)
+//      右侧子元素坐标index==null==false取反为true (相当于点在了无效区域) && index不等于0 (相当于点击在了有效区域)
+        if (!index && index !== 0) {
+//        不是零且是null return
+          return
+        }
+        this.scrollY = -this.listHeight[index] // 向下滚动是负数
+        // 使左侧scroll滚动至与右侧下标相符的方位    /   dom元素           滑动时间
         this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 0)
       },
       _calculateHeight () {
+        // 字母每一个元素距离顶部高度
         this.listHeight = []
         const list = this.$refs.listGroup
         let height = 0
@@ -107,6 +114,7 @@
         }
       }
     },
+//      监听
     watch: {
       data () {
         setTimeout(() => {
@@ -114,24 +122,24 @@
         }, 20)
       },
       scrollY (newY) {
+//        newY 向下滚动是负数 向上滚动是正数
         const listHeight = this.listHeight
-//        滚动到顶部
+//        滚动到顶部 向上滚动
         if (newY > 0) {
           this.currentIndex = 0
           return
         }
-//        滚动到中部
+//        滚动到中部           length - 1 因为顶部多出一个
         for (let i = 0; i < listHeight.length - 1; i++) {
           let height1 = listHeight[i] // 下限 数字值低
-          let height2 = listHeight[i + 1] // 上限 数字值高
+          let height2 = listHeight[i + 1] // 上一个元素的下限是这个元素的上限
           //  当前scroll位置与右侧匹配
           if (-newY >= height1 && -newY < height2) {
             this.currentIndex = i
             return
           }
         }
-//        滚动到低部
-        console.log(listHeight.length)
+//        滚动到低部        length - 2 因为顶/地部分别多出一个
         this.currentIndex = listHeight.length - 2
       }
     },
