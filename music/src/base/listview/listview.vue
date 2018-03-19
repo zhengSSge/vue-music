@@ -29,6 +29,9 @@
         </li>
       </ul>
     </div>
+    <div class="list-fixed" ref="fixed" v-show="fixedTitle">
+      <div class="fixed-title">{{fixedTitle}} </div>
+    </div>
   </scroll>
 </template>
 
@@ -37,13 +40,15 @@
   import { getData } from 'common/js/dom'
 
   const ANCHOR_HEIGHT = 18
+  const TITLE_HEIGHT = 30
 
   export default {
     data () {
       return {
         scrollY: -1, // 接收scroll传递过来的 Y(竖轴)滚动位置（当前位置）
         currentIndex: 0, // 高亮index
-        listHeight: [] // 字母每一个元素距离顶部高度
+        listHeight: [], // 左侧歌手每一个元素距离顶部高度
+        diff: -1 // fixed移动动画
       }
     },
     props: {
@@ -63,6 +68,12 @@
 //          右侧仅显示单一文字
           return group.title.substr(0, 1)
         })
+      },
+      fixedTitle () {
+        if (this.scrollY > 0) {
+          return ''
+        }
+        return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
       }
     },
     methods: {
@@ -91,10 +102,9 @@
         this.scrollY = pos.y
       },
       _scrollTo (index) {
-        console.log(index !== 0)
-//      右侧子元素坐标index==null==false取反为true (相当于点在了无效区域) && index不等于0 (相当于点击在了有效区域)
+//      右侧子元素坐标index负数是false取反为true 正数取反为false (相当于点在了无效区域) && index不等于0 (相当于点击在了有效区域)
         if (!index && index !== 0) {
-//        不是零且是null return
+//          是true      不是零
           return
         }
         this.scrollY = -this.listHeight[index] // 向下滚动是负数
@@ -114,7 +124,7 @@
         }
       }
     },
-//      监听
+//      监听数据变化
     watch: {
       data () {
         setTimeout(() => {
@@ -136,11 +146,22 @@
           //  当前scroll位置与右侧匹配
           if (-newY >= height1 && -newY < height2) {
             this.currentIndex = i
+            this.diff = height2 + newY // 取到上限到顶部的差
             return
           }
         }
 //        滚动到低部        length - 2 因为顶/地部分别多出一个
         this.currentIndex = listHeight.length - 2
+      },
+      diff (newVal) {
+//       获取差值       大于零等于不带顶部  && 小于30等于不到fixed元素
+        let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+        if (this.fixedTop === fixedTop) {
+          return
+        }
+        this.fixedTop = fixedTop
+//        设置动画向上隐藏
+        this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
       }
     },
     components: {
