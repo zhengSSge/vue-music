@@ -11,7 +11,7 @@
       <li v-for="group in data" class="list-group" :key="group.id" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <uL>
-          <li v-for="item in group.items" class="list-group-item" :key="item.id">
+          <li @click="selectItem(item)" v-for="item in group.items" class="list-group-item" :key="item.id">
             <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -77,6 +77,10 @@
       }
     },
     methods: {
+//      把数据冒出去传给singer组件
+      selectItem (item) {
+        this.$emit('select', item)
+      },
 //          移动端点击事件 使左侧滚动到右侧对应位置
       onShortcutTouchStart (e) {
         let anchorIndex = getData(e.target, 'index')

@@ -1,7 +1,8 @@
 <template>
   <!--歌手页组件-->
   <div class="singer" ref="singer">
-    <Listview :data="singers"></Listview>
+    <Listview @select="selectSinger" :data="singers"></Listview>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -10,6 +11,7 @@
   import { getSingerList } from 'api/singer'
   import { ERR_OK } from 'api/config'
   import Singer from 'common/js/singer'
+  import {mapMutations} from 'vuex' // 存数据语法堂
 
   const HOT_NAME = '热门'
   const HOT_SINGER_LEN = 10
@@ -24,6 +26,15 @@
       this._getSingerList()
     },
     methods: {
+//      接收到id并push二级路由
+      selectSinger (singer) {
+        this.$router.push(
+          {
+            path: `/singer/${singer.id}`
+          }
+        )
+        this.setSinger(singer)
+      },
       _getSingerList () {
         getSingerList().then((res) => {
           if (res.code === ERR_OK) {
@@ -79,7 +90,10 @@
         })
 //        合并
         return hot.concat(ret)
-      }
+      },
+      ...mapMutations({
+        setSinger: 'SET_SINGER'
+      })
     },
     components: {
       Listview
