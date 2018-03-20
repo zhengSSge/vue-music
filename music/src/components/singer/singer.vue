@@ -11,7 +11,7 @@
   import { getSingerList } from 'api/singer'
   import { ERR_OK } from 'api/config'
   import Singer from 'common/js/singer'
-  import {mapMutations} from 'vuex' // 存数据语法堂
+  import {mapMutations} from 'vuex' // 存数据语法糖
 
   const HOT_NAME = '热门'
   const HOT_SINGER_LEN = 10
@@ -26,6 +26,7 @@
       this._getSingerList()
     },
     methods: {
+//      listview组件冒出被点击事件 并把当前被点击数据传递过来
 //      接收到id并push二级路由
       selectSinger (singer) {
         this.$router.push(
@@ -33,6 +34,7 @@
             path: `/singer/${singer.id}`
           }
         )
+//        把数据存入vuex
         this.setSinger(singer)
       },
       _getSingerList () {

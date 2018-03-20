@@ -10,18 +10,22 @@
 
   export default {
     props: {
+//      速度
       probeType: {
         type: Number,
         default: 1
       },
+//      点击
       click: {
         type: Boolean,
         default: true
       },
+//      监听
       listenScroll: {
         type: Boolean,
         default: false
       },
+//      数据
       data: {
         type: Array,
         default: null
