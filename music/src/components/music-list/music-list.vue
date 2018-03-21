@@ -5,7 +5,13 @@
     </div>
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" :style="bgImg" ref="bgImage">
-      <div class="filter"></div>
+      <div class="play-wrapper" v-show="songs.length>0" ref="playWrapper">
+        <div class="play">
+          <i class="icon-play"></i>
+          <span class="text">随机播放全部</span>
+        </div>
+      </div>
+      <div class="filter" ref="filter"></div>
     </div>
     <div class="bg-layer" ref="layer"></div>
     <scroll
@@ -29,8 +35,11 @@
   import scroll from 'base/scroll/scroll'
   import songList from 'base/song-list/song-list'
   import loading from 'base/loading/loading'
+  import {prefixStyle} from 'common/js/dom'
 
   const RESERVED_HEIGHT = 40
+  const transform = prefixStyle('transform')
+  const backdrop = prefixStyle('backdrop-filter')
 
   export default {
     data () {
@@ -77,19 +86,33 @@
     watch: {
       scrollY (newVal) {
         let zIndex = 0
+        let scale = 1
+        let blur = 0
+        const percent = Math.abs(newVal / this.imageHeight)
+        if (newVal > 0) {
+          scale = 1 + percent
+          zIndex = 10
+        } else {
+          blur = Math.min(20, percent * 20)
+        }
+//        模糊涂层
+        this.$refs.filter.style[backdrop] = `blur(${blur}px)`
 //        参1参2 谁大返回谁
         let translateY = Math.max(this.minTransalteY, newVal)
-        this.$refs.layer.style.transform = `translate3d(0,${translateY}px,0)`
+        this.$refs.layer.style[transform] = `translate3d(0,${translateY}px,0)`
 //        y轴滚动距离 小于 img到顶部的距离
         if (newVal < this.minTransalteY) {
           zIndex = 10
 //        将图片设置为固定的高度(title高) 并提升z-index
           this.$refs.bgImage.style.paddingTop = 0
           this.$refs.bgImage.style.height = `${RESERVED_HEIGHT}px`
+          this.$refs.playWrapper.style.display = 'none'
         } else {
           this.$refs.bgImage.style.paddingTop = '70%'
           this.$refs.bgImage.style.height = 0
+          this.$refs.playWrapper.style.display = 'block'
         }
+        this.$refs.bgImage.style[transform] = `scale(${scale})`
         this.$refs.bgImage.style.zIndex = zIndex
       }
     },
