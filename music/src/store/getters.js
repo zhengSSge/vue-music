@@ -1,4 +1,4 @@
-// 存储state里数据
+// 取state数据
 export const singer = state => state.singer
 
 export const playing = state => state.playing
