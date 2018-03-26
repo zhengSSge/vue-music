@@ -44,14 +44,14 @@
             <div class="icon i-left">
               <i class="icon-playlist"></i>
             </div>
-            <div class="icon i-left">
+            <div class="icon i-left" :class="disableCls">
               <i @click="currentRem" class="icon-prev"></i>
             </div>
             <!--暂停/播放-->
-            <div class="icon i-center">
+            <div class="icon i-center" :class="disableCls">
               <i @click="togglePlaying" :class="playIcon"></i>
             </div>
-            <div class="icon i-right">
+            <div class="icon i-right" :class="disableCls">
               <i @click="currentAdd" class="icon-next"></i>
             </div>
             <div class="icon i-right">
@@ -78,7 +78,7 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @canplay="ready"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error"></audio>
   </div>
 </template>
 
@@ -104,6 +104,9 @@
       },
       playIconMi () {
         return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+      },
+      disableCls () {
+        return this.songReady ? '' : 'disable'
       },
       ...mapGetters([ // 映射
         'fullScreen', // 播放器收起
@@ -198,6 +201,9 @@
         this.songReady = false
       },
       ready() {
+        this.songReady = true
+      },
+      error() {
         this.songReady = true
       },
       _getPosAndScale () {
