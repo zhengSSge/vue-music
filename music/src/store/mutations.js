@@ -2,7 +2,7 @@
 import * as types from './mutation-types'
 
 const mutations = {
-  [types.SET_SINGER](state, singer) {
+  [types.SET_SINGER](state, singer) { // 存歌手
     state.singer = singer
   },
   [types.SET_PLAYING_STATE](state, flag) { // 播放/暂停

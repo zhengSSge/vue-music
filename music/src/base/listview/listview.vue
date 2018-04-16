@@ -1,5 +1,5 @@
 <template>
-  <!--歌手组件-->
+  <!--歌手组件 左右联动 2-->
   <scroll class="listview"
           :data="data"
           ref="listview"

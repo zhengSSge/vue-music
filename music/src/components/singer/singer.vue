@@ -1,5 +1,5 @@
 <template>
-  <!--歌手页组件-->
+  <!--歌手页组件 总页 1-->
   <div class="singer" ref="singer">
     <Listview @select="selectSinger" :data="singers"></Listview>
     <router-view></router-view>

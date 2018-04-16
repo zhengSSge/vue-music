@@ -1,5 +1,5 @@
 <template>
-  <!--头部header-->
+  <!--首页头部 header-->
   <div class="m-header">
     <div class="icon"></div>
     <h1 class="text">zheng Music</h1>

@@ -34,12 +34,13 @@
           <!--<span class="dot"></span>-->
           <!--<span class="dot"></span>-->
           <!--</div>-->
-          <!--<div class="progress-wrapper">-->
-          <!--<span class="time time-l"></span>-->
-          <!--<div class="progress-bar-wrapper">-->
-          <!--</div>-->
-          <!--<span class="time time-r"></span>-->
-          <!--</div>-->
+          <!--拖拽区域-->
+          <div class="progress-wrapper">
+            <span class="time time-l">{{_format(currenTime)}}</span>
+            <div class="progress-bar-wrapper">
+            </div>
+            <span class="time time-r">{{_format(currenTime)}}</span>
+          </div>
           <div class="operators">
             <div class="icon i-left">
               <i class="icon-playlist"></i>
@@ -78,7 +79,12 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error"></audio>
+    <audio ref="audio"
+           :src="currentSong.url"
+           @canplay="ready"
+           @error="error"
+           @timeupdate="updataTime"
+    ></audio>
   </div>
 </template>
 
@@ -90,9 +96,10 @@
   const transform = prefixStyle('transform')
 
   export default {
-    data() {
+    data () {
       return {
-        songReady: false
+        songReady: false,
+        currenTime: 0
       }
     },
     computed: {
@@ -115,7 +122,8 @@
         'playing', // 是否播放
         'currentIndex'
       ])
-    },
+
+  },
     created () {
     },
     methods: {
@@ -200,11 +208,29 @@
         }
         this.songReady = false
       },
-      ready() {
+      ready () {
         this.songReady = true
       },
-      error() {
+      error () {
         this.songReady = true
+      },
+      updataTime (e) {
+        this.currenTime = e.target.currentTime
+      },
+      // 字符串解析 y:mm
+      _format (interVal) {
+        interVal = interVal | 0
+        const minute = interVal / 60 | 0 // 分
+        const second = this._pad(interVal % 60) // 秒
+        return `${minute}:${second}`
+      },
+      _pad (num, n = 2) {
+        let len = num.toString().length
+        while (len < n) {
+          num = '0' + num
+          len++
+        }
+        return num
       },
       _getPosAndScale () {
         const targetWidth = 40
