@@ -38,8 +38,12 @@
           <div class="progress-wrapper">
             <span class="time time-l">{{_format(currenTime)}}</span>
             <div class="progress-bar-wrapper">
+              <progressBar
+                :percent="percent"
+                @percentChange="onProgressBarChange"
+              ></progressBar>
             </div>
-            <span class="time time-r">{{_format(currenTime)}}</span>
+            <span class="time time-r">{{_format(currentSong.duration)}}</span>
           </div>
           <div class="operators">
             <div class="icon i-left">
@@ -92,6 +96,7 @@
   import { mapGetters, mapMutations } from 'vuex'
   import animations from 'create-keyframe-animation' // 写js的方式写动画
   import { prefixStyle } from 'common/js/dom'
+  import progressBar from 'base/progress-bar/progress-bar'
 
   const transform = prefixStyle('transform')
 
@@ -115,6 +120,10 @@
       disableCls () {
         return this.songReady ? '' : 'disable'
       },
+      percent () {
+//        播放比例 当前时间除以歌曲总时长
+        return this.currenTime / this.currentSong.duration
+      },
       ...mapGetters([ // 映射
         'fullScreen', // 播放器收起
         'playlist', // 歌曲控制播放
@@ -123,7 +132,7 @@
         'currentIndex'
       ])
 
-  },
+    },
     created () {
     },
     methods: {
@@ -217,13 +226,21 @@
       updataTime (e) {
         this.currenTime = e.target.currentTime
       },
-      // 字符串解析 y:mm
+      onProgressBarChange (percent) {
+        console.log(percent)
+        this.$refs.audio.currentTime = this.currentSong.duration * percent // 总时间乘播放比得正确事件
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+      },
+      // 时间戳解析 y:mm
       _format (interVal) {
         interVal = interVal | 0
         const minute = interVal / 60 | 0 // 分
         const second = this._pad(interVal % 60) // 秒
         return `${minute}:${second}`
       },
+//      不满补位
       _pad (num, n = 2) {
         let len = num.toString().length
         while (len < n) {
@@ -265,6 +282,9 @@
           newPlaying ? audio.play() : audio.pause()
         }, 1000)
       }
+    },
+    components: {
+      progressBar
     }
   }
 </script>

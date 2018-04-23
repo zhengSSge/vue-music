@@ -1,4 +1,4 @@
-// 获取state数据
+// 把数据存入state
 import * as types from './mutation-types'
 
 const mutations = {

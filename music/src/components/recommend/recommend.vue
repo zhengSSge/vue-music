@@ -5,6 +5,7 @@
       <div>
         <div v-if="recommends.length" class="slider-wrapper">
           <slider>
+            <!--把这一堆插进slot插槽-->
             <!--vue2.2版本以后v-for需要添加 :key='' /简单的说就是为了提高遍历性能 -->
             <div v-for="item in recommends" :key="item.id">
               <a :href="item.linkUrl">
@@ -49,9 +50,7 @@
     },
     created () {
       this._getRecommend()
-//      setTimeout(() => {
-        this._getDiscList()
-//      }, 1000)
+      this._getDiscList()
     },
     methods: {
       _getRecommend () {
