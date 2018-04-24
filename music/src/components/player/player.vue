@@ -46,8 +46,8 @@
             <span class="time time-r">{{_format(currentSong.duration)}}</span>
           </div>
           <div class="operators">
-            <div class="icon i-left">
-              <i class="icon-playlist"></i>
+            <div class="icon i-left" @click="changeMode">
+              <i :class="iconMode"></i>
             </div>
             <div class="icon i-left" :class="disableCls">
               <i @click="currentRem" class="icon-prev"></i>
@@ -76,7 +76,9 @@
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
         <div class="control">
-          <i @click.stop="togglePlaying" :class="playIconMi"></i>
+          <progressCircle :radius="radius" :percent="percent">
+            <i @click.stop="togglePlaying" class="icon-mini" :class="playIconMi"></i>
+          </progressCircle>
         </div>
         <div class="control">
           <i class="icon-playlist"></i>
@@ -88,6 +90,7 @@
            @canplay="ready"
            @error="error"
            @timeupdate="updataTime"
+           @ended="end"
     ></audio>
   </div>
 </template>
@@ -97,6 +100,9 @@
   import animations from 'create-keyframe-animation' // 写js的方式写动画
   import { prefixStyle } from 'common/js/dom'
   import progressBar from 'base/progress-bar/progress-bar'
+  import progressCircle from 'base/progress-circle/progress-circle'
+  import { playMode } from 'common/js/config'
+  import { shuffle } from 'common/js/util'
 
   const transform = prefixStyle('transform')
 
@@ -104,7 +110,8 @@
     data () {
       return {
         songReady: false,
-        currenTime: 0
+        currenTime: 0,
+        radius: 32
       }
     },
     computed: {
@@ -124,12 +131,21 @@
 //        播放比例 当前时间除以歌曲总时长
         return this.currenTime / this.currentSong.duration
       },
+      iconMode () {
+//        取当前播放状态 匹配对应样式
+        return this.mode === playMode.sequence ? 'icon-sequence'
+          : this.mode === playMode.loop ? 'icon-loop'
+            : 'icon-random'
+      },
+//      获取vuex中数据
       ...mapGetters([ // 映射
         'fullScreen', // 播放器收起
         'playlist', // 歌曲控制播放
         'currentSong', // 当前歌曲数据
         'playing', // 是否播放
-        'currentIndex'
+        'currentIndex', // 当前播放歌曲下标
+        'mode', // 播放模式
+        'sequenceList' // 原始数据
       ])
 
     },
@@ -185,6 +201,17 @@
       togglePlaying () { // 切换播放状态
         this.setPlayingState(!this.playing)
       },
+      end () { // 播放结束后自动下一首
+        if (this.mode === playMode.loop) {
+          this.loop()
+        } else {
+          this.currentAdd()
+        }
+      },
+      loop () {
+        this.$refs.audio.currentTime = 0
+        this.$refs.audio.play()
+      },
       currentAdd () { // 下一首
 //        防止快速下一曲报红
         if (!this.songReady) {
@@ -227,11 +254,31 @@
         this.currenTime = e.target.currentTime
       },
       onProgressBarChange (percent) {
-        console.log(percent)
         this.$refs.audio.currentTime = this.currentSong.duration * percent // 总时间乘播放比得正确事件
         if (!this.playing) {
           this.togglePlaying()
         }
+      },
+//      点击切换模式 设置vuex
+      changeMode () {
+        const modes = (this.mode + 1) % 3 // 下标到第三位变成0
+        this.setPlayMode(modes) // 修改后写入vuex
+
+        let list = null
+        if (this.mode === 2) {
+          list = shuffle(this.sequenceList)
+        } else {
+          list = this.sequenceList
+        }
+        this.reserGurrentIndex(list)
+        this.setPlayList(list)
+      },
+      reserGurrentIndex (list) {
+//        切换模式 保持本首歌曲不受影响
+        let index = list.findIndex((itme) => {
+          return itme.id === this.currentSong.id
+        })
+        this.setCurrentIndex(index)
       },
       // 时间戳解析 y:mm
       _format (interVal) {
@@ -264,14 +311,21 @@
           scale
         }
       },
+//      vuex更新
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN', // 更改展示状态
         setPlayingState: 'SET_PLAYING_STATE', // 更改播放状态
-        setCurrentIndex: 'SET_CURRENT_INDEX' // 更改播放曲目
+        setCurrentIndex: 'SET_CURRENT_INDEX', // 更改播放曲目
+        setPlayMode: 'SET_PLAY_MODE', // 更改播放模式
+        setPlayList: 'SET_PLAYLIST' // 切换模式切换数据
       })
     },
     watch: {
-      currentSong () {
+//      监听第一个参数是新值 第二个参数是旧值
+      currentSong (newSong, oldSong) {
+        if (newSong.id === oldSong.id) {
+          return
+        }
         setTimeout(() => {
           this.$refs.audio.play()
         }, 20)
@@ -284,7 +338,8 @@
       }
     },
     components: {
-      progressBar
+      progressBar,
+      progressCircle
     }
   }
 </script>

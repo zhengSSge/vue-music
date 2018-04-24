@@ -1,12 +1,12 @@
 <template>
-  <!--歌手全部歌曲页 明星照片下拉放大3-->
+  <!--明星照片下拉放大 组件-->
   <div class="music-list">
     <div class="back" @click="back">
       <i class="icon-back"></i>
     </div>
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" :style="bgImg" ref="bgImage">
-      <div class="play-wrapper" v-show="songs.length>0" ref="playWrapper">
+      <div class="play-wrapper" v-show="songs.length>0" ref="playWrapper" @click="randomPlays">
         <div class="play">
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
@@ -23,6 +23,7 @@
       class="list" ref="list"
     >
       <div class="song-list-wrapper">
+        <!--歌手全部歌曲组件-->
         <songList @select="select" :songs="songs"></songList>
       </div>
       <div v-show="!songs.length" class="loading-container">
@@ -78,6 +79,7 @@
       }
     },
     methods: {
+//      点击歌曲列表派出select事件 selectPlay操作vuex
       select (item, index) {
         this.selectPlay({
           list: this.songs,
@@ -90,8 +92,15 @@
       back () {
         this.$router.back()
       },
+//      随机播放
+      randomPlays(){
+        this.randomPlay({
+          list: this.songs
+        })
+      },
       ...mapActions([ // 映射
-        'selectPlay'
+        'selectPlay',
+        'randomPlay'
       ])
     },
     watch: {

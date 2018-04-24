@@ -1,4 +1,6 @@
-// 面向对象封装数据
+/**
+ * 面向对象封装数据
+ */
 export default class Song {
   constructor ({id, mid, singer, name, album, duration, image, url}) {
     this.id = id
@@ -25,7 +27,11 @@ export function createSong (musicData) {
   })
 }
 
-// 合唱歌手/分开
+/**
+ * 合唱歌手/分开
+ * @param singer
+ * @returns {*}
+ */
 function filterSinger (singer) {
   let ret = []
   if (!singer) {

@@ -1,5 +1,5 @@
 <template>
-  <!--歌曲列表 4-->
+  <!--歌曲列表组件-->
   <div class="song-list">
     <ul>
       <li @click="selectItem(song, index)" class="item" v-for="(song, index) in songs" :key="song.id">

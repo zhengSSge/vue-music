@@ -1,6 +1,6 @@
 <template>
   <!--进度条基础组件-->
-  <div class="progress-bar" ref="progressBar">
+  <div class="progress-bar" ref="progressBar" @click="progressClick">
     <div class="bar-inner">
       <div class="progress" ref="progress"></div>
       <!--事件修饰符阻止浏览器默认行为-->
@@ -43,17 +43,28 @@
 //      touch 滑动
       progressTouchMove (e) {
         if (!this.touch.initiated) { // 如果都没有点击就进入move 直接退出
-          console.log(this.touch.initiated)
           return
         }
         const deltaX = e.touches[0].pageX - this.touch.startX // 获取横向偏移量
         // 获取滑动距离 不能小于零 切划出 总div
-        const fooSetWidth = Math.min(this.$refs.progressBar.clientWidth - PROGRESSBTNWIDTH, Math.max(0, this.touch.left + deltaX))
+        const fooSetWidth = Math.min(
+          this.$refs.progressBar.clientWidth - PROGRESSBTNWIDTH, Math.max(
+            0, this.touch.left + deltaX
+          )
+        )
         this._offsetW(fooSetWidth)
       },
 //      touch 结束
       processTouchEnd () {
         this.touch.initiated = false
+        this._triggerPercent()
+      },
+//      点击 前进后退
+      progressClick (e) {
+        const rect = this.$refs.progressBar.getBoundingClientRect() // 获取元素距离页面四周距离
+        const offsetWidth = e.pageX - rect.left
+        this._offsetW(offsetWidth)
+        // this._offsetW(e.offsetX) 此方法获取不准确 改用上方
         this._triggerPercent()
       },
 //      滑动动画

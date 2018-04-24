@@ -1,3 +1,10 @@
+/**
+ * jsonp跨域访问封装
+ * @param url
+ * @param data
+ * @param option
+ * @returns {Promise}
+ */
 import originJSONP from 'jsonp'
 
 export default function jsonp (url, data, option) {

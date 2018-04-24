@@ -1,3 +1,9 @@
+/**
+ * class操作
+ * @param el
+ * @param className
+ * @returns {boolean}
+ */
 export function hasClass (el, className) {
   let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
   return reg.test(el.className)
@@ -12,7 +18,13 @@ export function addClass (el, className) {
   el.className = newClass.join(' ')
 }
 
-// 存取自定义属性 date-
+/**
+ * 存取自定义属性 date-
+ * @param el
+ * @param name
+ * @param val
+ * @returns {*}
+ */
 export function getData (el, name, val) {
   const prefix = 'date-'
   name = prefix + name
@@ -23,6 +35,10 @@ export function getData (el, name, val) {
   }
 }
 
+/**
+ * 浏览器前缀添加
+ * @type {CSSStyleDeclaration}
+ */
 let elementStyle = document.createElement('div').style
 
 let vendor = (() => {

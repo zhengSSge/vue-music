@@ -1,3 +1,6 @@
+/**
+ * 歌曲数据处理
+ */
 export default class {
   constructor({id, name}) {
     this.id = id
