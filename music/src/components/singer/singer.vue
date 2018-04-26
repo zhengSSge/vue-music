@@ -1,7 +1,7 @@
 <template>
   <!--歌手页组件排名组件 1-->
   <div class="singer" ref="singer">
-    <Listview @select="selectSinger" :data="singers"></Listview>
+    <Listview @select="selectSinger" :data="singers" ref="list"></Listview>
     <router-view></router-view>
   </div>
 </template>
@@ -12,11 +12,13 @@
   import { ERR_OK } from 'api/config'
   import Singer from 'common/js/singer'
   import {mapMutations} from 'vuex' // 存数据语法糖
+  import { playlistMinxi } from 'common/js/mixin'
 
   const HOT_NAME = '热门'
   const HOT_SINGER_LEN = 10
 
   export default {
+    mixins: [playlistMinxi],
     data () {
       return {
         singers: []
@@ -26,6 +28,11 @@
       this._getSingerList()
     },
     methods: {
+      handlePlaylist(playlist) {
+        const bottom = playlist.length > 0 ? '60px' : ''
+        this.$refs.singer.style.bottom = bottom
+        this.$refs.list.refresh()
+      },
 //      listview组件冒出被点击事件 并把当前被点击数据传递过来
 //      接收到id并push二级路由
       selectSinger (singer) {

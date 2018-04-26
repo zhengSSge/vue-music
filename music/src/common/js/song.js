@@ -1,3 +1,7 @@
+import { getLyric } from 'api/song'
+import { ERR_OK } from 'api/config'
+import { Base64 } from 'js-base64'
+
 /**
  * 面向对象封装数据
  */
@@ -11,6 +15,24 @@ export default class Song {
     this.duration = duration
     this.image = image
     this.url = url
+  }
+
+  getLyric () {
+    if (this.lyric) {
+      return Promise.resolve(this.lyric)
+    }
+
+    return new Promise((resolve, reject) => {
+      // 这里调本地
+      getLyric(this.mid).then((res) => {
+        if (res.retcode === ERR_OK) {
+          this.lyric = Base64.decode(res.lyric)
+          // Promise.resolve
+          resolve(this.lyric)
+        } else {
+        }
+      })
+    })
   }
 }
 

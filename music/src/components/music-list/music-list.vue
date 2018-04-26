@@ -20,7 +20,8 @@
       :data="songs"
       :probeType="probeType"
       :listEnScroll="listEnScroll"
-      class="list" ref="list"
+      class="list"
+      ref="list"
     >
       <div class="song-list-wrapper">
         <!--歌手全部歌曲组件-->
@@ -39,12 +40,14 @@
   import loading from 'base/loading/loading'
   import {prefixStyle} from 'common/js/dom'
   import {mapActions} from 'vuex' // 异步
+  import {playlistMinxi} from 'common/js/mixin'
 
   const RESERVED_HEIGHT = 40
   const transform = prefixStyle('transform')
   const backdrop = prefixStyle('backdrop-filter')
 
   export default {
+    mixins: [playlistMinxi],
     data () {
       return {
         scrollY: 0
@@ -79,6 +82,11 @@
       }
     },
     methods: {
+      handlePlaylist(playlist) { // 从新计算底部距离
+        const bottom = playlist.length > 0 ? '60px' : ''
+        this.$refs.list.$el.style.bottom = bottom
+        this.$refs.list.refresh()
+      },
 //      点击歌曲列表派出select事件 selectPlay操作vuex
       select (item, index) {
         this.selectPlay({

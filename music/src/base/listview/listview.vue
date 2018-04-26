@@ -105,6 +105,9 @@
 //        接收scroll传递过来的 Y(竖轴)滚动位置（当前位置）
         this.scrollY = pos.y
       },
+      refresh() {
+        this.$refs.listview.refresh()
+      },
       _scrollTo (index) {
 //      右侧子元素坐标index负数是false取反为true 正数取反为false (相当于点在了无效区域) && index不等于0 (相当于点击在了有效区域)
         if (!index && index !== 0) {
