@@ -51,7 +51,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     // 代理设置
     before (app) {
-      app.get('/api/getDiscList', function (req, res) { // 歌曲数据
+      app.get('/api/getDiscList', function (req, res) { // 推荐歌曲数据
         // 请求的api地址
         const url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
         // 此方法欺骗qq

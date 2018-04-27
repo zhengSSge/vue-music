@@ -63,21 +63,21 @@
             path: `recommend/${item.dissid}`
           }
         )
-        this.setDisc(item)
+        this.setDisc(item) // 图片tit存入vuex
       },
-      handlePlaylist (playlist) {
+      handlePlaylist (playlist) { // mini 播放器覆盖底部
         const bottom = playlist.length > 0 ? '60px' : ''
         this.$refs.recommend.style.bottom = bottom
         this.$refs.scrpll.refresh()
       },
-      _getRecommend () {
+      _getRecommend () { // 轮播数据
         getRecommend().then((res) => {
           if (res.code === ERR_OK) {
             this.recommends = res.data.slider
           }
         })
       },
-      _getDiscList () {
+      _getDiscList () { // 推荐歌曲数据
         getDiscList().then((res) => {
           if (res.code === ERR_OK) {
             this.discList = res.data.list

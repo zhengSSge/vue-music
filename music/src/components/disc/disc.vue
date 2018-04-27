@@ -1,4 +1,5 @@
 <template>
+  <!--推荐歌曲页组件 / recommend-->
   <transition name="slide">
     <musicList :title="title" :bgImage="bgImage" :songs="songs"></musicList>
   </transition>
@@ -24,7 +25,7 @@
       bgImage () {
         return this.disc.imgurl
       },
-      ...mapGetters([
+      ...mapGetters([ // 取出
         'disc'
       ])
     },
@@ -46,7 +47,6 @@
         })
       },
       _normalizeSongs (list) {
-        console.log(list)
         let ret = []
         list.forEach((musicData) => {
           if (musicData.id && musicData.album.id) {

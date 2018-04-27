@@ -13,4 +13,6 @@ export const SET_PLAY_MODE = 'SET_PLAY_MODE' // 播放模式
 
 export const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX' // 播放列表第几位（下标）
 
-export const SET_DISC = 'SET_DISC' // 排行数据
+export const SET_DISC = 'SET_DISC' // 推荐歌曲数据
+
+export const SET_TOP_LIST = 'SET_TOP_LIST' // 排行歌曲数据
