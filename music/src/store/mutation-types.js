@@ -12,3 +12,5 @@ export const SET_SEQUENCE_LIST = 'SET_SEQUENCE_LIST' // 顺序列表
 export const SET_PLAY_MODE = 'SET_PLAY_MODE' // 播放模式
 
 export const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX' // 播放列表第几位（下标）
+
+export const SET_DISC = 'SET_DISC' // 排行数据

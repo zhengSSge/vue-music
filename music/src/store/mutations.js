@@ -22,6 +22,9 @@ const mutations = {
   },
   [types.SET_CURRENT_INDEX](state, index) { // 歌曲索引
     state.currentIndex = index
+  },
+  [types.SET_DISC](state, index) { // 排行数据
+    state.disc = index
   }
 }
 

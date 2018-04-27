@@ -51,7 +51,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     // 代理设置
     before (app) {
-      app.get('/api/getDiscList', function (req, res) {
+      app.get('/api/getDiscList', function (req, res) { // 歌曲数据
         // 请求的api地址
         const url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
         // 此方法欺骗qq
@@ -67,9 +67,34 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       })
-      app.get('/api/lyric', function (req, res) {
+      app.get('/api/lyric', function (req, res) { // 歌词数据
         // 请求的api地址
         const url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
+        // 此方法欺骗qq
+        axios.get(url, {
+          headers: {
+            referer: 'https://c.y.qq.com/',
+            host: 'c.y.qq.com'
+          },
+          params: req.query
+        }).then((response) => {
+          // 处理数据
+          var ret = response.data
+          if (typeof ret === 'string') {
+            var reg = /^\w+\(({[^()]+})\)$/
+            var matches = ret.match(reg)
+            if (matches) {
+              ret = JSON.parse(matches[1])
+            }
+          }
+          res.json(ret)
+        }).catch((e) => {
+          console.log(e)
+        })
+      })
+      app.get('/api/getSongList', function (req, res) { // 推荐数据
+        // 请求的api地址
+        const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
         // 此方法欺骗qq
         axios.get(url, {
           headers: {

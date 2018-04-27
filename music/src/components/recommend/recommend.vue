@@ -1,6 +1,6 @@
 <template>
   <!--歌单推荐-->
-  <div class="recommend">
+  <div class="recommend" ref="recommend">
     <Scroll ref="scrpll" class="recommend-content" :data="discList">
       <div>
         <div v-if="recommends.length" class="slider-wrapper">
@@ -17,7 +17,7 @@
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <ul>
-            <li v-for="item in discList" :key="item.id" class="item">
+            <li @click="selectItem(item)" v-for="item in discList" :key="item.id" class="item">
               <div class="icon">
                 <img width="60" height="60" v-lazy="item.imgurl">
               </div>
@@ -31,6 +31,7 @@
         <Loading v-show="!discList.length"></Loading>
       </div>
     </Scroll>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -41,6 +42,7 @@
   import { getRecommend, getDiscList } from 'api/recommend'
   import { ERR_OK } from 'api/config'
   import { playlistMinxi } from 'common/js/mixin'
+  import { mapMutations } from 'vuex'
 
   export default {
     mixins: [playlistMinxi],
@@ -55,7 +57,15 @@
       this._getDiscList()
     },
     methods: {
-      handlePlaylist(playlist) {
+      selectItem (item) { // 排行页二级路由
+        this.$router.push(
+          {
+            path: `recommend/${item.dissid}`
+          }
+        )
+        this.setDisc(item)
+      },
+      handlePlaylist (playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
         this.$refs.recommend.style.bottom = bottom
         this.$refs.scrpll.refresh()
@@ -79,7 +89,10 @@
           this.datas = true
           this.$refs.scrpll.refresh()
         }
-      }
+      },
+      ...mapMutations({
+        setDisc: 'SET_DISC'
+      })
     },
     components: {
       Slider,
