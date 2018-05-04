@@ -33,6 +33,10 @@
       listEnScroll: {
         type: Boolean,
         default: false
+      },
+      pullup: {
+        type: Boolean,
+        default: false
       }
     },
     mounted () {
@@ -49,10 +53,17 @@
           probeType: this.probeType,
           click: this.click
         })
-        if (this.listEnScroll) { // 如果监听向外派发一个事件
+        if (this.listEnScroll) { // 如果监听，向外派发一个事件
           let me = this
           this.scroll.on('scroll', (pos) => {
             me.$emit('scroll', pos)
+          })
+        }
+        if (this.pullup) { // 上拉刷新
+          this.scroll.on('scrollEnd', () => { // 滚动结束派发 scrollEnd 它只派发一次
+            if (this.scroll.y <= (this.scroll.maxScrollY + 50)) { // 如果y 小于 maxScrollY 说明快到底部了
+              this.$emit('scrollToEnd') // 然后派发事件
+            }
           })
         }
       },
