@@ -35,7 +35,13 @@
         type: Boolean,
         default: false
       },
+//      上拉刷新
       pullup: {
+        type: Boolean,
+        default: false
+      },
+//      滚动input失去焦点blur
+      beforeScroll: {
         type: Boolean,
         default: false
       }
@@ -74,6 +80,11 @@
           }
         })
          */
+        if (this.beforeScroll) {
+          this.scroll.on('beforeScrollStart', () => {
+            this.$emit('beforeScroll')
+          })
+        }
       },
 //      禁用 better-scroll
       disable () {

@@ -8,6 +8,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { debounce } from 'common/js/util'
+
   export default {
     props: {
       placeholder: {
@@ -21,13 +23,16 @@
       }
     },
     created () {
-      this.$watch('query', (newQuery) => { // watch 监听 == watch: {}
+      this.$watch('query', debounce((newQuery) => { // watch 监听 == watch: {}
         this.$emit('query', newQuery)
-      })
+      }, 200)) // 两百毫秒内多次调用query的话 是不会抛出事件的
     },
     methods: {
       clear () {
         this.query = ''
+      },
+      blurInput() {
+        this.$refs.query.blur()
       },
       getQuery (query) {
         this.query = query

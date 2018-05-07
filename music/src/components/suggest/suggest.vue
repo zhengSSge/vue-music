@@ -4,6 +4,8 @@
           :data="result"
           :pullup="pullup"
           @scrollToEnd="suggest"
+          @beforeScroll="beforeScroll"
+          :beforeScroll="beforeScrollTow"
           ref="scroll"
   >
     <ul class="suggest-list">
@@ -17,18 +19,22 @@
       </li>
       <loading v-show="hasMore" title=""></loading>
     </ul>
+    <div v-show="!hasMore && !result.length" class="no-result-wrapper">
+      <noResult title="抱歉，暂无搜索结果"></noResult>
+    </div>
   </scroll>
 </template>
 
 <script type="text/ecmascript-6">
   import scroll from 'base/scroll/scroll'
   import loading from 'base/loading/loading'
+  import noResult from 'base/no-result/no-result'
   import { search } from 'api/search'
   import { ERR_OK } from 'api/config'
   import { createSong } from 'common/js/song'
   import Singer from 'common/js/singer'
-  import { mapMutations } from 'vuex'
-  import {playlistMinxi} from 'common/js/mixin'
+  import { mapMutations, mapActions } from 'vuex'
+  import { playlistMinxi } from 'common/js/mixin'
 
   const TYPE_SINGER = 'singer' // 歌手状态
   const perpage = 20 // 请求数据
@@ -50,11 +56,12 @@
         page: 1, // 请求页数
         result: [], // 请求数据
         pullup: true, // 是否开启上拉刷新
-        hasMore: true // 是否大于总数据
+        hasMore: true, // 是否大于总数据
+        beforeScrollTow: true // 开启滚动input失去焦点
       }
     },
     methods: {
-      handlePlaylist(playlist) { // 从新计算底部距离
+      handlePlaylist (playlist) { // 从新计算底部距离
         const bottom = playlist.length > 0 ? '60px' : ''
         this.$refs.scroll.$el.style.bottom = bottom
         this.$refs.scroll.refresh()
@@ -66,7 +73,6 @@
         search(this.query, this.page, this.showSinger, perpage).then((res) => {
           if (res.code === ERR_OK) {
             this.result = this._genResult(res.data) // 处理数据
-            console.log(this.result)
             this._checkMore(res.data)
           }
         })
@@ -122,7 +128,12 @@
             path: `/search/${singer.id}`
           })
           this.singer(singer)
+        } else {
+          this.insertSong(item)
         }
+      },
+      beforeScroll() {
+        this.$emit('beforeScroll')
       },
       _checkMore (data) { // 已有数据大于总数据不再继续加载
         // 没有数据 或者 已加载数据大于总数 返回false
@@ -151,7 +162,10 @@
       },
       ...mapMutations({
         singer: 'SET_SINGER'
-      })
+      }),
+      ...mapActions([
+        'insertSong'
+      ])
     },
     watch: {
       query () {
@@ -160,7 +174,8 @@
     },
     components: {
       scroll,
-      loading
+      loading,
+      noResult
     }
   }
 </script>

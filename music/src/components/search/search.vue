@@ -22,7 +22,7 @@
     </div>
     <!--搜索数据展示div-->
     <div class="search-result" ref="searchResult" v-show="query">
-      <suggest :query="query"></suggest>
+      <suggest @beforeScroll="blurInput" :query="query"></suggest>
     </div>
     <router-view></router-view>
   </div>
@@ -53,6 +53,9 @@
       },
       onQueryChange (query) {
         this.query = query
+      },
+      blurInput() {
+        this.$refs.searchBox.blurInput()
       },
       _getHotKey () {
         getHotKey().then((res) => {
