@@ -102,7 +102,7 @@
         this.scrollY = pos.y
       },
       back () {
-        this.$router.back()
+        this.$router.back() // 路由返回
       },
 //      随机播放
       randomPlays(){
