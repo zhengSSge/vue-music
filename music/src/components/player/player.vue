@@ -283,7 +283,9 @@
         this.songReady = true
       },
       error () {
+        alert('开通会员方可播放该歌曲,自动为您切换一下首')
         this.songReady = true
+        this.currentAdd()
       },
       updataTime (e) {
         this.currenTime = e.target.currentTime

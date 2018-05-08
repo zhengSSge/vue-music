@@ -131,8 +131,9 @@
         } else {
           this.insertSong(item)
         }
+        this.$emit('selectQuery')
       },
-      beforeScroll() {
+      beforeScroll () {
         this.$emit('beforeScroll')
       },
       _checkMore (data) { // 已有数据大于总数据不再继续加载

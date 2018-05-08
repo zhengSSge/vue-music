@@ -9,6 +9,7 @@
     <div class="shortcut-wrapper" v-show="!query">
       <div class="shortcut">
         <div>
+          <!--热门搜索-->
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
             <ul>
@@ -17,12 +18,22 @@
               </li>
             </ul>
           </div>
+          <!--搜索历史-->
+          <div class="search-history" v-show="searchHistory.length">
+            <h1 class="title">
+              <span class="text">搜索历史</span>
+              <span class="clear">
+                <i class="icon-clear"></i>
+              </span>
+            </h1>
+            <searchList :searches="searchHistory"></searchList>
+          </div>
         </div>
       </div>
     </div>
     <!--搜索数据展示div-->
     <div class="search-result" ref="searchResult" v-show="query">
-      <suggest @beforeScroll="blurInput" :query="query"></suggest>
+      <suggest @selectQuery="saveSearch" @beforeScroll="blurInput" :query="query"></suggest>
     </div>
     <router-view></router-view>
   </div>
@@ -30,10 +41,11 @@
 
 <script type="text/ecmascript-6">
   import searchBox from 'base/search-box/search-box'
+  import searchList from 'base/search-list/search-list'
   import suggest from 'src/components/suggest/suggest'
   import { getHotKey } from 'api/search'
   import { ERR_OK } from 'api/config'
-//  import { mapGetters } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
 
   export default {
     data () {
@@ -42,19 +54,25 @@
         query: ''
       }
     },
-    computer: {
+    computed: {
+      ...mapGetters([
+        'searchHistory'
+      ])
     },
     created () {
       this._getHotKey()
     },
     methods: {
+      saveSearch () {
+        this.saveSearchHistory(this.query)
+      },
       addQuery (query) {
         this.$refs.searchBox.getQuery(query) // 调用搜索框组件下改变query的方法
       },
       onQueryChange (query) {
         this.query = query
       },
-      blurInput() {
+      blurInput () {
         this.$refs.searchBox.blurInput()
       },
       _getHotKey () {
@@ -63,11 +81,15 @@
             this.hotKey = res.data.hotkey.slice(0, 10) // 遍历前十条
           }
         })
-      }
+      },
+      ...mapActions([
+        'saveSearchHistory'
+      ])
     },
     components: {
       searchBox,
-      suggest
+      suggest,
+      searchList
     }
   }
 </script>

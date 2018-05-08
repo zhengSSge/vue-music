@@ -28,6 +28,9 @@ const mutations = {
   },
   [types.SET_TOP_LIST](state, index) { // 排行歌曲数据
     state.topList = index
+  },
+  [types.SET_SEARCH_HISTORY](state, history) { // 播放历史记录
+    state.searchHistory = history
   }
 }
 
