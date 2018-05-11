@@ -6,8 +6,8 @@
       <searchBox ref="searchBox" @query="onQueryChange"></searchBox>
     </div>
     <!--热搜div-->
-    <div class="shortcut-wrapper" v-show="!query">
-      <div class="shortcut">
+    <div ref="shortcutWrapper" class="shortcut-wrapper" v-show="!query">
+      <Scroll class="shortcut" ref="shortcutr" :data="shortcut">
         <div>
           <!--热门搜索-->
           <div class="hot-key">
@@ -22,18 +22,24 @@
           <div class="search-history" v-show="searchHistory.length">
             <h1 class="title">
               <span class="text">搜索历史</span>
-              <span class="clear">
+              <span class="clear" @click="clear">
                 <i class="icon-clear"></i>
               </span>
             </h1>
-            <searchList :searches="searchHistory"></searchList>
+            <searchList @select="addQuery" @delete="deleteSearchHistory" :searches="searchHistory"></searchList>
           </div>
         </div>
-      </div>
+      </Scroll>
     </div>
+    <!--弹框组件-->
+    <confirm ref="confirm"
+             text="您确定要清空搜索历史记录吗"
+             confirmBtnText="清空"
+             @confirm="clearSearchHistory"
+    ></confirm>
     <!--搜索数据展示div-->
     <div class="search-result" ref="searchResult" v-show="query">
-      <suggest @selectQuery="saveSearch" @beforeScroll="blurInput" :query="query"></suggest>
+      <suggest ref="suggest" @selectQuery="saveSearch" @beforeScroll="blurInput" :query="query"></suggest>
     </div>
     <router-view></router-view>
   </div>
@@ -42,19 +48,26 @@
 <script type="text/ecmascript-6">
   import searchBox from 'base/search-box/search-box'
   import searchList from 'base/search-list/search-list'
+  import Scroll from 'base/scroll/scroll'
+  import confirm from 'base/confirm/confirm'
   import suggest from 'src/components/suggest/suggest'
   import { getHotKey } from 'api/search'
   import { ERR_OK } from 'api/config'
   import { mapActions, mapGetters } from 'vuex'
+  import { playlistMinxi } from 'common/js/mixin'
 
   export default {
+    mixins: [playlistMinxi],
     data () {
       return {
-        hotKey: '',
+        hotKey: [],
         query: ''
       }
     },
     computed: {
+      shortcut () {
+        return this.hotKey.concat(this.searchHistory)
+      },
       ...mapGetters([
         'searchHistory'
       ])
@@ -63,6 +76,16 @@
       this._getHotKey()
     },
     methods: {
+      handlePlaylist (playlist) {
+        const bottom = playlist.length > 0 ? '60px' : ''
+        this.$refs.shortcutWrapper.style.bottom = bottom
+        this.$refs.shortcutr.refresh()
+        this.$refs.searchResult.style.bottom = bottom
+        this.$refs.suggest.refresh()
+      },
+      clear () {
+        this.$refs.confirm.show()
+      },
       saveSearch () {
         this.saveSearchHistory(this.query)
       },
@@ -82,14 +105,29 @@
           }
         })
       },
+      // 如 直接调用mapActions 不需要 methods 因为mapActions挂载时已把方法挂载到methods上
       ...mapActions([
-        'saveSearchHistory'
+        'saveSearchHistory',
+        'deleteSearchHistory',
+        'clearSearchHistory'
       ])
+    },
+    watch: {
+      query (newQuery) {
+        // query 从有到无 重新计算
+        if (!newQuery) {
+          setTimeout(() => {
+            this.$refs.shortcutr.refresh()
+          }, 20)
+        }
+      }
     },
     components: {
       searchBox,
       suggest,
-      searchList
+      searchList,
+      confirm,
+      Scroll
     }
   }
 </script>

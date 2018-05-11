@@ -142,6 +142,9 @@
           this.hasMore = false
         }
       },
+      refresh () {
+        this.$refs.scroll.refresh()
+      },
       _genResult (data) {
         let ret = []
         if (data.zhida && data.zhida.singerid) { // 满足条件 把zhida，push进ret 并添加一个状态

@@ -22,6 +22,13 @@ function insertArray (arr, val, compare, maxLen) {
   }
 }
 
+function deleteFromArray (arr, compare) {
+  const index = arr.findIndex(compare)
+  if (index > -1) {
+    arr.splice(index, 1)
+  }
+}
+
 /**
  * 本地存储
  * @param query
@@ -41,6 +48,28 @@ export function saveStorage (query) {
  * 读取本地存储数据
  * @returns {*}
  */
-export function loadSearch() {
+export function loadSearch () {
   return storage.get(SEARCH_KEY, [])
+}
+
+/**
+ * 删除个别数据
+ * @returns {*}
+ */
+export function deleteSearch (query) {
+  let searches = storage.get(SEARCH_KEY, [])
+  deleteFromArray(searches, (item) => {
+    return item === query
+  })
+  storage.set(SEARCH_KEY, searches)
+  return searches
+}
+
+/**
+ * 清空缓存
+ * @returns {*}
+ */
+export function clearSearch () {
+  storage.remove(SEARCH_KEY)
+  return []
 }

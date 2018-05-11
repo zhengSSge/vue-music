@@ -2,7 +2,7 @@
 import * as types from './mutation-types'
 import { playMode } from 'common/js/config'
 import { shuffle } from 'common/js/util'
-import { saveStorage } from 'common/js/cache'
+import { saveStorage, deleteSearch, clearSearch } from 'common/js/cache'
 
 /**
  * 匹配歌曲对应index
@@ -93,4 +93,12 @@ export const insertSong = function ({commit, state}, song) {
 
 export const saveSearchHistory = function ({commit}, query) {
   commit(types.SET_SEARCH_HISTORY, saveStorage(query))
+}
+
+export const deleteSearchHistory = function ({commit}, query) {
+  commit(types.SET_SEARCH_HISTORY, deleteSearch(query))
+}
+
+export const clearSearchHistory = function ({commit}, query) {
+  commit(types.SET_SEARCH_HISTORY, clearSearch())
 }
