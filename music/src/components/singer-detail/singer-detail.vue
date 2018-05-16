@@ -7,7 +7,7 @@
 
 <script type="text/ecmascript-6">
   import MusicList from 'src/components/music-list/music-list'
-  import { getSingerDetail } from 'api/singer'
+  import { getSingerDetail, getSingerVkey } from 'api/singer'
   import { ERR_OK } from 'api/config'
   import { mapGetters } from 'vuex' // 取数据语法糖
   import { createSong } from 'common/js/song' // 封装过滤数据
@@ -15,14 +15,15 @@
   export default {
     data () {
       return {
-        songs: []
+        songs: [],
+        vkey: []
       }
     },
     computed: {
       title () {
         return this.singer.name
       },
-      bgImage() {
+      bgImage () {
         return this.singer.avatar
       },
 //      取出vuex中之前存入数据
@@ -50,14 +51,31 @@
       _normalizeSings (list) {
 //        使用song类处理数据
         let res = []
+
         list.forEach((item) => {
 //          es6的解构赋值。大括号中的key对应item的key  其值也是相对应的
           let {musicData} = item
           if (musicData.songid && musicData.albummid) {
-            res.push(createSong(musicData))
+            this._getSingerVkey(musicData.songmid).then((results) => {
+              if (results) {
+                res.push(createSong(musicData, results))
+              }
+            })
           }
         })
         return res
+      },
+      _getSingerVkey (mid) { // 取:请求url参数vkey
+        const p = new Promise((resolve, reject) => {
+          getSingerVkey(mid).then((res) => {
+            if (res.code === ERR_OK) {
+              resolve(res.data.items[0].vkey)
+            } else {
+              reject(new Error('something bad happened'))
+            }
+          })
+        })
+        return p
       }
     },
     components: {

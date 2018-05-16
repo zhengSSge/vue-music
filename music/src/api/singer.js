@@ -1,5 +1,6 @@
 // 歌手页数据
 import jsonp from 'common/js/jsonp'
+import axios from 'axios'
 import {commonParams, options} from './config'
 
 export function getSingerList() {
@@ -32,4 +33,28 @@ export function getSingerDetail(singerId) {
   })
 
   return jsonp(url, data, options)
+}
+
+// 请求vkey
+export function getSingerVkey(singerId) {
+  const url = '/api/getSingerVkey'
+  const data = Object.assign({}, commonParams, {
+    hostUin: 0,
+    needNewCode: 0,
+    platform: 'yqq',
+    order: 'listen',
+    begin: 0,
+    num: 80,
+    guid: '9409816380',
+    cid: '205361747',
+    songstatus: 1,
+    songmid: singerId,
+    filename: `C400${singerId}.m4a`
+  })
+
+  return axios.get(url, {
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
 }
