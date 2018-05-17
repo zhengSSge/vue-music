@@ -1,14 +1,49 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Recommend from 'src/components/recommend/recommend'
-import Search from 'src/components/search/search'
-import Singer from 'src/components/singer/singer'
-import Rank from 'src/components/rank/rank'
-import SingerDetail from 'src/components/singer-detail/singer-detail'
-import Disc from 'src/components/disc/disc'
-import Acti from 'src/components/top-list/top-list'
 
 Vue.use(Router)
+// 路由懒加载
+const Recommend = (resolve) => {
+  import('src/components/recommend/recommend').then((recommend) => {
+    resolve(recommend)
+  })
+}
+
+const Search = (resolve) => {
+  import('src/components/search/search').then((search) => {
+    resolve(search)
+  })
+}
+
+const Singer = (resolve) => {
+  import('src/components/singer/singer').then((singer) => {
+    resolve(singer)
+  })
+}
+
+const Rank = (resolve) => {
+  import('src/components/rank/rank').then((rank) => {
+    resolve(rank)
+  })
+}
+
+const SingerDetail = (resolve) => {
+  import('src/components/singer-detail/singer-detail').then((singerdetail) => {
+    resolve(singerdetail)
+  })
+}
+
+const Disc = (resolve) => {
+  import('src/components/disc/disc').then((disc) => {
+    resolve(disc)
+  })
+}
+
+const Acti = (resolve) => {
+  import('src/components/top-list/top-list').then((toplist) => {
+    resolve(toplist)
+  })
+}
 
 export default new Router({
   routes: [

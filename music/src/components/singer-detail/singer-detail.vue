@@ -44,11 +44,14 @@
 //        请求歌手歌曲
         getSingerDetail(this.singer.id).then((res) => {
           if (res.code === ERR_OK) {
-            this.songs = this._normalizeSings(res.data.list)
+            let list = res.data.list.slice()
+            this.songs = this._normalizeSings(list)
+            console.log(list)
           }
         })
       },
-      _normalizeSings (list) {
+      _normalizeSings (lis) {
+        let list = lis.slice()
 //        使用song类处理数据
         let res = []
 

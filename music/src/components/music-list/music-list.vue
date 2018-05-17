@@ -93,8 +93,9 @@
       },
 //      点击歌曲列表派出select事件 selectPlay操作vuex
       select (item, index) {
+        let list = this.songs.slice()
         this.selectPlay({
-          list: this.songs,
+          list: list,
           index
         })
       },
