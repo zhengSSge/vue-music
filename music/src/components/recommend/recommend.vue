@@ -53,8 +53,15 @@
       }
     },
     created () {
-      this._getRecommend()
-      this._getDiscList()
+      const ua = navigator.userAgent.toLowerCase()
+      const isWeixin = ua.indexOf('micromessenger') !== -1
+      if (isWeixin) {
+        document.write('请使用手机自带浏览器打开')
+        return false
+      } else {
+        this._getRecommend()
+        this._getDiscList()
+      }
     },
     methods: {
       selectItem (item) { // 排行页二级路由

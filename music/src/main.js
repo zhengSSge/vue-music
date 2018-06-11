@@ -11,6 +11,7 @@ import 'common/stylus/index.styl'
 Vue.use(VueLazyload, {
   loading: require('common/image/default.png')
 })
+// require('./common/js/vCon')
 
 // Vue.config.productionTip = false
 

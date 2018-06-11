@@ -45,7 +45,7 @@ export function createSong (musicData, vkey) {
     album: musicData.albumname,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
-    url: `http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?vkey=${vkey}&fromtag=66`
+    url: `http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?vkey=${vkey}&guid=9409816380&uin=0&fromtag=66`
   })
 }
 
@@ -58,7 +58,7 @@ export function songList (musicData) {
     album: musicData.album.name,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.album.mid}.jpg?max_age=2592000`,
-    url: `http://dl.stream.qqmusic.qq.com/C400${musicData.mid}.m4a?fromtag=66`
+    url: `http://dl.stream.qqmusic.qq.com/C400${musicData.mid}.m4a?&guid=9409816380&uin=0&fromtag=66`
   })
 }
 
